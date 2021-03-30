@@ -1,34 +1,42 @@
-// import  TextField  from '@material-ui/core/TextField'
+import { Button, TextField, Checkbox, ButtonGroup } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core'
 
-// import { Button } from "@material-ui/core";
+const useStyles = makeStyles({
+  field: {
+    display: 'block',
+    marginRight: 30,
+    marginLeft: 20
+  },
+  button: {
+    padding: 15
+  }
+})
+
 
 const Input = ({ inputText, setInputText, handleClick, checked, handleChecked }) => {
-  
-   const handleChange = (e) => {
+  const classes = useStyles();
+  const handleChange = (e) => {
     setInputText(e.target.value)
   }
 
-  return ( 
+  return (
     <>
       <form className="input-form">
-        <input type="checkbox" checked={checked} onChange={handleChecked}/>
-        {/* <TextField 
-        value={inputText}
-        onChange={handleChange}
-        className="input"
-        /> */}
-        <input 
-        type="text"
-        className="input"
-        value={inputText}
-        onChange={handleChange}
+        <Checkbox checked={checked} onChange={handleChecked} />
+        <TextField
+          className={classes.field}
+          value={inputText}
+          onChange={handleChange}
+          variant="outlined"
+          color="secondary"
         />
-        {/* <Button variant="contained" color="primary"></Button> */}
-        <input className="input-submit" type="submit" value="Filter by number" required title="byNumbers" onClick={handleClick('byNumbers')} />
-        <input className="input-submit" type="submit" value="Filter by string" required title="byString" onClick={handleClick('byString')} />
+        <ButtonGroup color="secondary" variant="outlined">
+          <Button className={classes.button} type="submit" required title="byNumbers" onClick={handleClick('byNumbers')}>One</Button>
+          <Button type="submit" required title="byString" onClick={handleClick('byString')}>Two</Button>
+        </ButtonGroup>
       </form>
     </>
-   );
+  );
 }
- 
+
 export default Input;
