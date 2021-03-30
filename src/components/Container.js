@@ -10,15 +10,14 @@ const Container = (props) => {
   const [checked, setChecked] = useState(false);
   const [filterType, setFilterType] = useState('');
 
-  
+
   const filterByNumbers = (arr, value) => {
-    if (isNaN(value) || value === '') return [];
+    if (isNaN(value) || value === ' ') return [];
     return arr.filter((item) => item.length > value);
-    }
-  
-  
+  }
+
+
   const filterByString = (arr, value, checked) => {
-    // if (!isNaN(value)) return [];
     if (checked === true) return arr.filter((item) => item.indexOf(value) > -1);
     return arr.filter((item) => item.toLowerCase().indexOf(value.toLowerCase()) > -1);
   }
@@ -29,9 +28,9 @@ const Container = (props) => {
   };
 
   const filter = FILTER_TYPES[filterType];
-  const result = filter ? filter(data, inputText) : [];
-  
-  
+  const result = filter ? filter(data, inputText, checked) : [];
+
+
 
   useEffect(() => {
     fetch('http://localhost:3001/data')
