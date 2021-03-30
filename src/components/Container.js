@@ -1,20 +1,8 @@
 import { useEffect, useState } from 'react';
-import Input from './Input'
+import Input from './Input';
 import Table from './Table';
 
-const filterByNumbers = (arr, value) => arr.filter((item) => item.length > value);
-  // if (isNaN(value) || value === '') {
-  //   return;
-  // } else {
-    // arr.filter((item) => item.length > value);
-  // }
-const filterByString = (arr, value) => arr.filter((item) => item.indexOf(value) > -1);
 
-
-const FILTER_TYPES = {
-  byNumbers: filterByNumbers,
-  byString: filterByString,
-};
 
 const Container = (props) => {
   const [inputText, setInputText] = useState('');
@@ -22,8 +10,28 @@ const Container = (props) => {
   const [checked, setChecked] = useState(false);
   const [filterType, setFilterType] = useState('');
 
+  
+  const filterByNumbers = (arr, value) => {
+    if (isNaN(value) || value === '') return [];
+    return arr.filter((item) => item.length > value);
+    }
+  
+  
+  const filterByString = (arr, value, checked) => {
+    // if (!isNaN(value)) return [];
+    if (checked === true) return arr.filter((item) => item.indexOf(value) > -1);
+    return arr.filter((item) => item.toLowerCase().indexOf(value.toLowerCase()) > -1);
+  }
+
+  const FILTER_TYPES = {
+    byNumbers: filterByNumbers,
+    byString: filterByString,
+  };
+
   const filter = FILTER_TYPES[filterType];
   const result = filter ? filter(data, inputText) : [];
+  
+  
 
   useEffect(() => {
     fetch('http://localhost:3001/data')
@@ -36,29 +44,6 @@ const Container = (props) => {
     e.preventDefault();
     setFilterType(filterType);
   }
-
-
-
-  // const handleClickStr = (e) => {
-  //   e.preventDefault();
-  //   if (!isNaN(inputText)) {
-  //     console.log('number');
-  //   } else {
-  //     console.log('str');
-  //     if (checked === true) {
-  //       result = data.filter((elem) => elem.indexOf(inputText) > -1);
-  //       console.log(checked);
-  //       console.log(result);
-  //       setResult(result)
-  //     } else {
-  //       result = data.filter((elem) => elem.toLowerCase().indexOf(inputText.toLowerCase()) > -1);
-  //       console.log(checked);
-  //       console.log(result);
-  //       setResult(result)
-  //     }
-  // inputText.toLowerCase();
-
-
 
   const handleChecked = () => {
     setChecked((prevState) => !prevState);
